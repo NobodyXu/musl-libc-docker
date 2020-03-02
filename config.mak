@@ -11,7 +11,7 @@ exec_prefix = $(prefix)
 bindir = $(exec_prefix)/bin
 libdir = $(prefix)/lib
 includedir = $(prefix)/include
-syslibdir = /lib
+syslibdir = /usr/local/lib
 CC = clang
 CFLAGS = -Oz
 CFLAGS_AUTO = -pipe -fomit-frame-pointer -fno-unwind-tables -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections -Werror=implicit-function-declaration -Werror=implicit-int -Werror=pointer-sign -Werror=pointer-arith -Qunused-arguments
