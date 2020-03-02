@@ -18,8 +18,11 @@ ADD https://musl.libc.org/releases/musl-${ver}.tar.gz /tmp/
 WORKDIR /usr/local/src/musl/
 RUN tar xvzf /tmp/musl-latest.tar.gz --strip-components 1
 
-RUN ./configure --enable-wrapper=clang --syslibdir=/usr/local/lib/
-ADD config.mak /usr/local/src/musl/
+RUN ./configure --enable-wrapper=clang \
+                --syslibdir=/usr/local/lib/ \
+                AR=llvm-ar RANLIB=llvm-ranlib \
+                CFLAGS=-Oz \
+                LDFLAGS="-Wl,--plugin-opt=O3 -Wl,-O2, -Wl,--as-needed"
 
 RUN make -j $(nproc)
 RUN make install
@@ -30,6 +33,7 @@ ADD lib/* /usr/local/musl/lib/
 RUN ln -s /usr/local/lib/ld-musl-x86_64.so.1 /usr/local/musl/bin/ldd
 
 WORKDIR /
+RUN echo 'Build summary:\n' && cat /usr/local/src/musl/config.mak
 RUN rm -r /usr/local/src/musl/
 
 FROM Build AS Test
