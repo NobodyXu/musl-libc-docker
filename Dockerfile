@@ -46,7 +46,10 @@ RUN ldd a.out | grep 'libc.so => /usr/local/lib/ld-musl-x86_64.so.1'
 RUN musl-gcc   hello.c && ldd a.out && ./a.out
 RUN ldd a.out | grep 'libc.so => /usr/local/lib/ld-musl-x86_64.so.1'
 
-RUN musl-gcc -static hello.c && ./a.out
+RUN musl-gcc   -static hello.c && ./a.out
+RUN ldd a.out && (echo Test failed!; exit 1) || echo Test successed!
+
+RUN musl-clang -static hello.c && ./a.out
 RUN ldd a.out && (echo Test failed!; exit 1) || echo Test successed!
 
 FROM Build AS Final
