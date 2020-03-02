@@ -18,7 +18,7 @@ ADD https://musl.libc.org/releases/musl-${ver}.tar.gz /tmp/
 WORKDIR /usr/local/src/musl/
 RUN tar xvzf /tmp/musl-latest.tar.gz --strip-components 1
 
-RUN ./configure --enable-wrapper=clang
+RUN ./configure --enable-wrapper=clang --syslibdir=/usr/local/lib/
 ADD config.mk /usr/local/src/musl
 
 RUN make -j $(nproc)
