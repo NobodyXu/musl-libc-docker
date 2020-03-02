@@ -30,7 +30,7 @@ RUN make install
 ## Add musl-gcc
 ADD bin/* /usr/local/musl/bin/
 ADD lib/* /usr/local/musl/lib/
-RUN ln -s /usr/local/lib/ld-musl-x86_64.so.1 /usr/local/musl/bin/ldd
+RUN ln -s /usr/local/lib/ld-musl-x86_64.so.1 /usr/local/musl/bin/musl-ldd
 
 WORKDIR /
 RUN echo 'Build summary:\n' && cat /usr/local/src/musl/config.mak
@@ -44,17 +44,17 @@ ADD hello.c /tmp/
 WORKDIR /tmp/
 ENV PATH=/usr/local/musl/bin/:$PATH
 
-RUN musl-clang hello.c && ldd a.out && ./a.out
-RUN ldd a.out | grep 'libc.so => /usr/local/lib/ld-musl-x86_64.so.1'
+RUN musl-clang hello.c && musl-ldd a.out && ./a.out
+RUN musl-ldd a.out | grep 'libc.so => /usr/local/lib/ld-musl-x86_64.so.1'
 
-RUN musl-gcc   hello.c && ldd a.out && ./a.out
-RUN ldd a.out | grep 'libc.so => /usr/local/lib/ld-musl-x86_64.so.1'
+RUN musl-gcc   hello.c && musl-ldd a.out && ./a.out
+RUN musl-ldd a.out | grep 'libc.so => /usr/local/lib/ld-musl-x86_64.so.1'
 
 RUN musl-gcc   -static hello.c && ./a.out
-RUN ldd a.out && (echo Test failed!; exit 1) || echo Test successed!
+RUN musl-ldd a.out && (echo Test failed!; exit 1) || echo Test successed!
 
 RUN musl-clang -static hello.c && ./a.out
-RUN ldd a.out && (echo Test failed!; exit 1) || echo Test successed!
+RUN musl-ldd a.out && (echo Test failed!; exit 1) || echo Test successed!
 
 FROM Build AS Final
 RUN /usr/local/sbin/rm_apt-fast.sh
