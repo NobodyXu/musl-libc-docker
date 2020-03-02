@@ -38,13 +38,12 @@ WORKDIR /tmp/
 ENV PATH=/usr/local/musl/bin/:$PATH
 
 RUN musl-clang hello.c && ldd a.out && ./a.out
-RUN ldd a.out | grep 'libc.so => /lib/ld-musl-x86_64.so.1'
+RUN ldd a.out | grep 'libc.so => /usr/local/lib/ld-musl-x86_64.so.1'
 
 RUN musl-gcc   hello.c && ldd a.out && ./a.out
-RUN ldd a.out | grep 'libc.so => /lib/ld-musl-x86_64.so.1'
+RUN ldd a.out | grep 'libc.so => /usr/local/lib/ld-musl-x86_64.so.1'
 
 FROM $base AS Final
 
 ENV PATH=/usr/local/musl/bin/:$PATH
 COPY --from=Build /usr/local/musl/ /usr/local/musl/
-COPY --from=Build /lib/ld-musl-x86_64.so.1 /lib/
