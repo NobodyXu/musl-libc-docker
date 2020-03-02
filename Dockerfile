@@ -27,7 +27,7 @@ RUN make install
 ## Add musl-gcc
 ADD bin/* /usr/local/musl/bin/
 ADD lib/* /usr/local/musl/lib/
-RUN ln -s /lib/ld-musl-x86_64.so.1 /usr/local/musl/bin/ldd
+RUN ln -s /usr/local/lib/ld-musl-x86_64.so.1 /usr/local/musl/bin/ldd
 
 FROM Build AS Test
 
