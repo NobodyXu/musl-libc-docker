@@ -29,6 +29,9 @@ ADD bin/* /usr/local/musl/bin/
 ADD lib/* /usr/local/musl/lib/
 RUN ln -s /usr/local/lib/ld-musl-x86_64.so.1 /usr/local/musl/bin/ldd
 
+WORKDIR /
+RUN rm -r /usr/local/src/musl/
+
 FROM Build AS Test
 
 RUN apt-auto install -y --no-install-recommends gcc
@@ -46,7 +49,10 @@ RUN ldd a.out | grep 'libc.so => /usr/local/lib/ld-musl-x86_64.so.1'
 RUN musl-gcc -static hello.c && ./a.out
 RUN ldd a.out && (echo Test failed!; exit 1) || echo Test successed!
 
-FROM $base AS Final
+FROM Build AS Final
+RUN /usr/local/sbin/rm_apt-fast.sh
+
+FROM $base AS Release
 
 ENV PATH=/usr/local/musl/bin/:$PATH
-COPY --from=Build /usr/local/musl/ /usr/local/musl/
+COPY --from=Final /usr/local/ /usr/local/
