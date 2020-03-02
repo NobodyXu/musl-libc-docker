@@ -1,0 +1,7 @@
+#!/bin/bash -ex
+
+source hooks/functions.sh
+
+for base_img in $base_imgs; do
+    time docker push ver=$DOCKER_TAG -t $IMAGE_NAME-$(v2t $base_img) .
+done
