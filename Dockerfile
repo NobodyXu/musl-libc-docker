@@ -19,7 +19,7 @@ WORKDIR /usr/local/src/musl/
 RUN tar xvzf /tmp/musl-latest.tar.gz --strip-components 1
 
 RUN ./configure --enable-wrapper=clang --syslibdir=/usr/local/lib/
-ADD config.mk /usr/local/src/musl
+ADD config.mak /usr/local/src/musl/
 
 RUN make -j $(nproc)
 RUN make install
