@@ -1,0 +1,3 @@
+#!/bin/bash -ex
+
+time docker build --build-arg ver=$DOCKER_TAG -t $IMAGE_NAME .
