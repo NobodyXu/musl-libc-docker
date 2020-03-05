@@ -13,10 +13,10 @@ ENV CC=clang
 
 ## Build and Install musl
 ARG ver=latest
-ADD https://musl.libc.org/releases/musl-${ver}.tar.gz /tmp/
+ADD https://musl.libc.org/releases/musl-${ver}.tar.gz /tmp/musl.tar.gz
 
 WORKDIR /usr/local/src/musl/
-RUN tar xvzf /tmp/musl-latest.tar.gz --strip-components 1
+RUN tar xvzf /tmp/musl.tar.gz --strip-components 1
 
 RUN ./configure --enable-wrapper=clang \
                 --syslibdir=/usr/local/lib/ \
